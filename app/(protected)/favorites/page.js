@@ -3,7 +3,7 @@ import { FavoritesExperience } from "@/components/favorites/favorites-experience
 import { getFavoritesPageData } from "@/lib/data";
 
 export const metadata = {
-  title: "Favorites | Noir Table"
+  title: "Favorites"
 };
 
 export default async function FavoritesPage() {

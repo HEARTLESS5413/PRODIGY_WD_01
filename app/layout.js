@@ -15,8 +15,35 @@ const bodyFont = Manrope({
 });
 
 export const metadata = {
-  title: "Noir Table",
-  description: "Premium restaurant web app with Supabase auth, dynamic menu, and favorites."
+  title: {
+    default: "Noir Table — Premium Dining Experience",
+    template: "%s | Noir Table"
+  },
+  description:
+    "Explore a chef-curated menu, save your favorite dishes, and enjoy a premium dining experience powered by Next.js and Supabase.",
+  keywords: ["restaurant", "menu", "dining", "favorites", "supabase", "next.js"],
+  authors: [{ name: "HEARTLESS5413" }],
+  openGraph: {
+    title: "Noir Table — Premium Dining Experience",
+    description:
+      "Chef-curated menu, real-time favorites, and secure authentication for a premium restaurant web app.",
+    type: "website",
+    locale: "en_US",
+    siteName: "Noir Table"
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Noir Table — Premium Dining Experience",
+    description:
+      "Chef-curated menu, real-time favorites, and secure authentication for a premium restaurant web app."
+  },
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000")
+};
+
+export const viewport = {
+  themeColor: "#050505",
+  width: "device-width",
+  initialScale: 1
 };
 
 export default function RootLayout({ children }) {

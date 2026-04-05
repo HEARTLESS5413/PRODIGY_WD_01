@@ -4,7 +4,7 @@ import { AuthShell } from "@/components/auth/auth-shell";
 import { getSessionUser } from "@/lib/data";
 
 export const metadata = {
-  title: "Login | Noir Table"
+  title: "Login"
 };
 
 export default async function LoginPage() {

@@ -3,7 +3,7 @@ import { MenuExperience } from "@/components/menu/menu-experience";
 import { getMenuPageData } from "@/lib/data";
 
 export const metadata = {
-  title: "Menu | Noir Table"
+  title: "Menu"
 };
 
 export default async function MenuPage() {

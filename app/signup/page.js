@@ -4,7 +4,7 @@ import { AuthShell } from "@/components/auth/auth-shell";
 import { getSessionUser } from "@/lib/data";
 
 export const metadata = {
-  title: "Sign Up | Noir Table"
+  title: "Sign Up"
 };
 
 export default async function SignupPage() {
