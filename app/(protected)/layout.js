@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
+import { isAdminUser } from "@/lib/admin";
 import { getProfile, getSessionUser } from "@/lib/data";
 
 export default async function ProtectedLayout({ children }) {
@@ -10,11 +11,11 @@ export default async function ProtectedLayout({ children }) {
   }
 
   const profile = await getProfile(user.id);
+  const isAdmin = isAdminUser(user);
 
   return (
-    <DashboardShell profile={profile} user={user}>
+    <DashboardShell isAdmin={isAdmin} profile={profile} user={user}>
       {children}
     </DashboardShell>
   );
 }
-

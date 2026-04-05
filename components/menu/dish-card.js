@@ -1,10 +1,11 @@
+import { AdminDishControls } from "@/components/menu/admin-dish-controls";
 import Image from "next/image";
 import { Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { StarRating } from "@/components/ui/star-rating";
 import { cn, formatCurrency } from "@/lib/utils";
 
-export function DishCard({ item, isFavorite, isPending, onToggleFavorite }) {
+export function DishCard({ item, isAdmin = false, isFavorite, isPending, onToggleFavorite }) {
   return (
     <article className="glass-panel group overflow-hidden rounded-[1.85rem]">
       <div className="relative aspect-[4/3] overflow-hidden">
@@ -18,6 +19,15 @@ export function DishCard({ item, isFavorite, isPending, onToggleFavorite }) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
         <div className="absolute left-4 top-4 rounded-full border border-white/10 bg-black/40 px-3 py-2 backdrop-blur-xl">
           <StarRating value={item.rating} />
+        </div>
+        <div
+          className={`absolute right-4 top-4 rounded-full border px-3 py-2 text-xs font-semibold uppercase tracking-[0.24em] backdrop-blur-xl ${
+            item.is_available
+              ? "border-emerald-400/30 bg-emerald-400/15 text-emerald-100"
+              : "border-amber-400/25 bg-amber-300/15 text-amber-100"
+          }`}
+        >
+          {item.is_available ? "Available" : "Unavailable"}
         </div>
       </div>
 
@@ -34,20 +44,23 @@ export function DishCard({ item, isFavorite, isPending, onToggleFavorite }) {
 
         <p className="text-sm leading-7 text-white/65">{item.description}</p>
 
-        <Button
-          className={cn(
-            "w-full justify-center rounded-2xl",
-            isFavorite ? "bg-white text-base-950 hover:brightness-95" : ""
-          )}
-          disabled={isPending}
-          onClick={() => onToggleFavorite(item.id)}
-          variant={isFavorite ? "secondary" : "ghost"}
-        >
-          <Heart className={cn("h-4 w-4", isFavorite ? "fill-current text-accent-coral" : "")} />
-          {isFavorite ? "Saved to Favorites" : "Add to Favorites"}
-        </Button>
+        <div className="space-y-3">
+          <Button
+            className={cn(
+              "w-full justify-center rounded-2xl",
+              isFavorite ? "bg-white text-base-950 hover:brightness-95" : ""
+            )}
+            disabled={isPending}
+            onClick={() => onToggleFavorite(item.id)}
+            variant={isFavorite ? "secondary" : "ghost"}
+          >
+            <Heart className={cn("h-4 w-4", isFavorite ? "fill-current text-accent-coral" : "")} />
+            {isFavorite ? "Saved to Favorites" : "Add to Favorites"}
+          </Button>
+
+          {isAdmin ? <AdminDishControls item={item} /> : null}
+        </div>
       </div>
     </article>
   );
 }
-

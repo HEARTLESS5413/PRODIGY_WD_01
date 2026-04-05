@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { isAdminUser } from "@/lib/admin";
 import { curatedMenuSeed } from "@/lib/menu-seed";
 import { getSupabaseAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
@@ -15,18 +16,14 @@ export async function POST() {
 
   try {
     const adminClient = getSupabaseAdminClient();
+    const isAdmin = isAdminUser(user);
 
-    const [{ count }, profileResponse] = await Promise.all([
-      adminClient.from("menu_items").select("id", { count: "exact", head: true }),
-      supabase.from("profiles").select("role").eq("id", user.id).maybeSingle()
-    ]);
-
-    const isAdmin = profileResponse.data?.role === "admin";
+    const { count } = await adminClient.from("menu_items").select("id", { count: "exact", head: true });
 
     if ((count ?? 0) > 0 && !isAdmin) {
       return NextResponse.json(
         {
-          error: "The sample menu has already been loaded. Promote an admin profile to reseed it."
+          error: "The sample menu has already been loaded. Only configured admin users can reseed it."
         },
         { status: 403 }
       );
@@ -58,4 +55,3 @@ export async function POST() {
     );
   }
 }
-

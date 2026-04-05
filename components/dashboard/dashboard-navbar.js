@@ -24,7 +24,7 @@ const navigationItems = [
   }
 ];
 
-export function DashboardNavbar({ user, profile }) {
+export function DashboardNavbar({ user, profile, isAdmin }) {
   const pathname = usePathname();
   const router = useRouter();
   const supabase = getSupabaseBrowserClient();
@@ -89,7 +89,9 @@ export function DashboardNavbar({ user, profile }) {
             <div className="hidden items-center gap-3 md:flex">
               <div className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-right">
                 <p className="text-sm font-semibold text-white">{displayName}</p>
-                <p className="text-xs text-white/50">{user.email}</p>
+                <p className="text-xs text-white/50">
+                  {isAdmin ? "Admin" : "Member"} • {user.email}
+                </p>
               </div>
               <Button disabled={isLoggingOut} onClick={handleLogout} size="sm" variant="secondary">
                 <LogOut className="h-4 w-4" />
@@ -111,7 +113,9 @@ export function DashboardNavbar({ user, profile }) {
             <div className="border-t border-white/8 px-4 pb-4 pt-3 md:hidden">
               <div className="mb-4 rounded-[1.5rem] border border-white/8 bg-white/5 px-4 py-4">
                 <p className="text-sm font-semibold text-white">{displayName}</p>
-                <p className="text-xs text-white/50">{user.email}</p>
+                <p className="text-xs text-white/50">
+                  {isAdmin ? "Admin" : "Member"} • {user.email}
+                </p>
               </div>
               <div className="flex flex-col gap-2">
                 {navigationItems.map((item) => (
@@ -145,4 +149,3 @@ export function DashboardNavbar({ user, profile }) {
     </header>
   );
 }
-

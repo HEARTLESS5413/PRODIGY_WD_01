@@ -1,6 +1,6 @@
 import { DashboardNavbar } from "@/components/dashboard/dashboard-navbar";
 
-export function DashboardShell({ user, profile, children }) {
+export function DashboardShell({ user, profile, isAdmin, children }) {
   return (
     <div className="relative min-h-screen overflow-hidden">
       <div className="ambient-orb left-[-7rem] top-[20rem] h-72 w-72" />
@@ -10,9 +10,8 @@ export function DashboardShell({ user, profile, children }) {
           background: "radial-gradient(circle, rgba(116, 225, 192, 0.15), transparent 74%)"
         }}
       />
-      <DashboardNavbar profile={profile} user={user} />
+      <DashboardNavbar isAdmin={isAdmin} profile={profile} user={user} />
       <main className="shell relative z-10 pb-16 pt-28 sm:pt-32">{children}</main>
     </div>
   );
 }
-

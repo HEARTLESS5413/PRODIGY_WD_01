@@ -10,7 +10,7 @@ Noir Table is a production-ready restaurant web application built with Next.js A
 - Dynamic restaurant menu with realistic seeded dishes
 - Favorites stored per user in Supabase with live sync
 - Search dishes and filter by category
-- Admin-only add-dish form
+- Config-based admin user with add, edit, delete, price, and availability controls
 - Loading states, toasts, and error handling
 - Vercel-ready frontend with integrated Next.js API routes
 
@@ -66,12 +66,14 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-public-anon-key
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+ADMIN_EMAILS=admin@example.com,owner@example.com
 ```
 
 Notes:
 
 - `SUPABASE_SERVICE_ROLE_KEY` is used only on the server for the one-click sample menu bootstrap route.
 - Never expose the service role key in the browser.
+- `ADMIN_EMAILS` is a comma-separated list of email addresses that should get full admin access.
 
 ## Local Setup
 
@@ -103,15 +105,23 @@ npm run dev
 
 ## Admin Setup
 
-New users are created with the `guest` role by default. To enable the admin-only add-dish form, promote a user after signup:
+No database role setup is required.
 
-```sql
-update public.profiles
-set role = 'admin'
-where id = 'YOUR_AUTH_USER_UUID';
+1. Add your admin email to `.env.local`:
+
+```env
+ADMIN_EMAILS=youradmin@email.com
 ```
 
-You can find the auth user UUID in Supabase Authentication -> Users.
+2. Log in with that email.
+3. Restart the local server or redeploy.
+
+That user will automatically get:
+
+- add-dish access
+- edit access for names, descriptions, images, prices, ratings, and categories
+- availability toggles
+- delete access
 
 ## How Favorites Work
 
@@ -141,16 +151,13 @@ You have two options:
 1. Run [`supabase/seed.sql`](/c:/Users/abhij/OneDrive/Desktop/PROJECT/INTERNSHIP/PRODIGY_WD_01/supabase/seed.sql) in Supabase SQL editor.
 2. Sign in and press the in-app "Load chef-curated sample menu" button on the menu page.
 
-If menu data already exists, reseeding through the app is restricted to admin users.
+If menu data already exists, reseeding through the app is restricted to configured admin users.
 
 ## Production Notes
 
 - Protected routes are enforced by middleware and server-side checks
 - Supabase RLS policies are included in the schema
 - Menu reads come from the database, not hardcoded frontend-only mocks
+- Admin access is controlled by `ADMIN_EMAILS`, not by a database role
 - Images are configured for Unsplash in `next.config.mjs`
 - The app is designed for Vercel deployment with zero backend split required
-
-## Suggested GitHub Push Flow
-
-Your current local folder is inside a larger parent git workspace, so confirm your git remote before pushing. If you want this code published to `HEARTLESS5413/PRODIGY_WD_01`, point this folder or its parent repo at that remote first, then commit and push.

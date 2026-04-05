@@ -16,10 +16,10 @@ export default async function MenuPage() {
   return (
     <MenuExperience
       initialFavoriteIds={data.favoriteIds}
+      isAdmin={data.isAdmin}
       menuItems={data.menuItems}
       profile={data.profile}
       user={data.user}
     />
   );
 }
-

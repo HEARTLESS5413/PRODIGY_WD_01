@@ -3,7 +3,6 @@ create extension if not exists "pgcrypto";
 create table if not exists public.profiles (
   id uuid primary key references auth.users (id) on delete cascade,
   full_name text,
-  role text not null default 'guest' check (role in ('guest', 'admin')),
   created_at timestamptz not null default timezone('utc', now())
 );
 
@@ -15,9 +14,13 @@ create table if not exists public.menu_items (
   category text not null check (category in ('Starters', 'Main Course', 'Desserts', 'Drinks')),
   image_url text not null,
   rating numeric(2, 1) not null check (rating between 1 and 5),
+  is_available boolean not null default true,
   created_at timestamptz not null default timezone('utc', now()),
   updated_at timestamptz not null default timezone('utc', now())
 );
+
+alter table public.menu_items
+add column if not exists is_available boolean not null default true;
 
 create table if not exists public.favorites (
   id uuid primary key default gen_random_uuid(),
@@ -63,19 +66,6 @@ after insert on auth.users
 for each row
 execute procedure public.handle_new_user();
 
-create or replace function public.is_admin(user_id uuid)
-returns boolean
-language sql
-stable
-security definer set search_path = public
-as $$
-  select exists (
-    select 1
-    from public.profiles
-    where id = user_id and role = 'admin'
-  );
-$$;
-
 alter table public.profiles enable row level security;
 alter table public.menu_items enable row level security;
 alter table public.favorites enable row level security;
@@ -103,12 +93,6 @@ to authenticated
 using (true);
 
 drop policy if exists "Menu items are manageable by admins" on public.menu_items;
-create policy "Menu items are manageable by admins"
-on public.menu_items
-for all
-to authenticated
-using (public.is_admin(auth.uid()))
-with check (public.is_admin(auth.uid()));
 
 drop policy if exists "Favorites are viewable by owner" on public.favorites;
 create policy "Favorites are viewable by owner"
@@ -130,4 +114,3 @@ on public.favorites
 for delete
 to authenticated
 using (auth.uid() = user_id);
-

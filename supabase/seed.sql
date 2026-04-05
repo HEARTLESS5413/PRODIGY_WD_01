@@ -1,4 +1,4 @@
-insert into public.menu_items (name, description, price, category, image_url, rating)
+insert into public.menu_items (name, description, price, category, image_url, rating, is_available)
 values
   (
     'Charred Burrata',
@@ -6,7 +6,8 @@ values
     16,
     'Starters',
     'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=80',
-    4.8
+    4.8,
+    true
   ),
   (
     'Truffle Mushroom Arancini',
@@ -14,7 +15,8 @@ values
     14,
     'Starters',
     'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=80',
-    4.7
+    4.7,
+    true
   ),
   (
     'Citrus Tuna Crudo',
@@ -22,7 +24,8 @@ values
     19,
     'Starters',
     'https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=1200&q=80',
-    4.9
+    4.9,
+    true
   ),
   (
     'Smoked Ribeye',
@@ -30,7 +33,8 @@ values
     38,
     'Main Course',
     'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=1200&q=80',
-    4.9
+    4.9,
+    true
   ),
   (
     'Saffron Seafood Linguine',
@@ -38,7 +42,8 @@ values
     31,
     'Main Course',
     'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?auto=format&fit=crop&w=1200&q=80',
-    4.8
+    4.8,
+    true
   ),
   (
     'Miso Glazed Salmon',
@@ -46,7 +51,8 @@ values
     29,
     'Main Course',
     'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=1200&q=80',
-    4.7
+    4.7,
+    true
   ),
   (
     'Wild Mushroom Risotto',
@@ -54,7 +60,8 @@ values
     27,
     'Main Course',
     'https://images.unsplash.com/photo-1633964913295-ceb43826cd73?auto=format&fit=crop&w=1200&q=80',
-    4.6
+    4.6,
+    true
   ),
   (
     'Dark Chocolate Dome',
@@ -62,7 +69,8 @@ values
     13,
     'Desserts',
     'https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=1200&q=80',
-    4.9
+    4.9,
+    true
   ),
   (
     'Burnt Vanilla Basque Cheesecake',
@@ -70,7 +78,8 @@ values
     12,
     'Desserts',
     'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=1200&q=80',
-    4.8
+    4.8,
+    true
   ),
   (
     'Espresso Tiramisu',
@@ -78,7 +87,8 @@ values
     11,
     'Desserts',
     'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=1200&q=80',
-    4.7
+    4.7,
+    true
   ),
   (
     'Midnight Citrus Spritz',
@@ -86,7 +96,8 @@ values
     10,
     'Drinks',
     'https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=1200&q=80',
-    4.5
+    4.5,
+    true
   ),
   (
     'Iced Pistachio Latte',
@@ -94,7 +105,8 @@ values
     8,
     'Drinks',
     'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=1200&q=80',
-    4.6
+    4.6,
+    true
   )
 on conflict (name) do update
 set
@@ -103,4 +115,5 @@ set
   category = excluded.category,
   image_url = excluded.image_url,
   rating = excluded.rating,
+  is_available = excluded.is_available,
   updated_at = timezone('utc', now());

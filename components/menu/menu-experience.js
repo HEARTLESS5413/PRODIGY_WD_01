@@ -12,7 +12,7 @@ import { SeedMenuButton } from "@/components/menu/seed-menu-button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { SectionHeading } from "@/components/ui/section-heading";
 
-export function MenuExperience({ user, profile, menuItems, initialFavoriteIds }) {
+export function MenuExperience({ user, profile, isAdmin, menuItems, initialFavoriteIds }) {
   const { query, setQuery, activeCategory, setActiveCategory, filteredItems, groupedItems } =
     useMenuFilters(menuItems);
   const { favoriteIds, pendingItemIds, toggleFavorite } = useFavorites(
@@ -21,7 +21,8 @@ export function MenuExperience({ user, profile, menuItems, initialFavoriteIds })
   );
 
   const displayName = profile?.full_name || user?.user_metadata?.full_name || "Guest";
-  const isAdmin = profile?.role === "admin";
+  const availableCount = menuItems.filter((item) => item.is_available).length;
+  const unavailableCount = menuItems.length - availableCount;
 
   const categoryCounts = menuItems.reduce(
     (counts, item) => {
@@ -65,8 +66,8 @@ export function MenuExperience({ user, profile, menuItems, initialFavoriteIds })
               },
               {
                 icon: ShieldCheck,
-                title: "Logged in as",
-                value: user.email
+                title: isAdmin ? "Admin access" : "Logged in as",
+                value: isAdmin ? "Full menu control" : user.email
               }
             ].map((stat) => (
               <div key={stat.title} className="rounded-[1.6rem] border border-white/10 bg-white/5 p-4">
@@ -109,6 +110,11 @@ export function MenuExperience({ user, profile, menuItems, initialFavoriteIds })
                     menuItems.reduce((sum, item) => sum + Number(item.price), 0) /
                       Math.max(menuItems.length, 1)
                   )}`
+                },
+                {
+                  icon: ShieldCheck,
+                  title: isAdmin ? "Availability control" : "Live availability",
+                  description: `${availableCount} available, ${unavailableCount} unavailable`
                 }
               ].map((item) => (
                 <div
@@ -136,7 +142,7 @@ export function MenuExperience({ user, profile, menuItems, initialFavoriteIds })
       {menuItems.length === 0 ? (
         <EmptyState
           action={<SeedMenuButton />}
-          description="Your database is ready, but the menu is empty. Load the curated sample menu or publish dishes from the Chef Desk once you promote an admin profile."
+          description="Your database is ready, but the menu is empty. Load the curated sample menu or publish dishes from the Chef Desk once you configure an admin email."
           title="Your restaurant menu is ready for its first service"
         />
       ) : null}
@@ -159,6 +165,7 @@ export function MenuExperience({ user, profile, menuItems, initialFavoriteIds })
         >
           <MenuSection
             favoriteIds={favoriteIds}
+            isAdmin={isAdmin}
             items={items}
             pendingItemIds={pendingItemIds}
             title={title}
@@ -169,4 +176,3 @@ export function MenuExperience({ user, profile, menuItems, initialFavoriteIds })
     </div>
   );
 }
-

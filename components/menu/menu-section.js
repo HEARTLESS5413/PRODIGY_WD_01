@@ -1,6 +1,13 @@
 import { DishCard } from "@/components/menu/dish-card";
 
-export function MenuSection({ title, items, favoriteIds, pendingItemIds, onToggleFavorite }) {
+export function MenuSection({
+  title,
+  items,
+  favoriteIds,
+  isAdmin,
+  pendingItemIds,
+  onToggleFavorite
+}) {
   return (
     <section className="space-y-6" id={title.toLowerCase().replace(/\s+/g, "-")}>
       <div className="flex items-end justify-between gap-4">
@@ -16,6 +23,7 @@ export function MenuSection({ title, items, favoriteIds, pendingItemIds, onToggl
         {items.map((item) => (
           <DishCard
             isFavorite={favoriteIds.includes(item.id)}
+            isAdmin={isAdmin}
             isPending={pendingItemIds.includes(item.id)}
             item={item}
             key={item.id}
@@ -26,4 +34,3 @@ export function MenuSection({ title, items, favoriteIds, pendingItemIds, onToggl
     </section>
   );
 }
-
