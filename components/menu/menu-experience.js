@@ -70,10 +70,10 @@ export function MenuExperience({ user, profile, isAdmin, menuItems, initialFavor
                 value: isAdmin ? "Full menu control" : user.email
               }
             ].map((stat) => (
-              <div key={stat.title} className="rounded-[1.6rem] border border-white/10 bg-white/5 p-4">
+              <div key={stat.title} className="overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/5 p-4">
                 <stat.icon className="h-5 w-5 text-accent-gold" />
                 <p className="mt-4 text-sm text-white/50">{stat.title}</p>
-                <p className="mt-1 text-lg font-semibold text-white">{stat.value}</p>
+                <p className="mt-1 truncate text-lg font-semibold text-white" title={stat.value}>{stat.value}</p>
               </div>
             ))}
           </div>
